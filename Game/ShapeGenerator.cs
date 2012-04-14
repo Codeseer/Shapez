@@ -12,19 +12,11 @@ public class ShapeGenerator : MonoBehaviour {
 	//public pyramid pyramidPrefab;
 	//public diamond diamondPrefab;
 	
-	public Camera camera;
-	private GameData gd;
+	private Camera camera;
 	
 	// Use this for initialization
 	void Start () {
-		camera = Camera.mainCamera;
-		
-		if (!gameObject.Equals(Camera.main))
-			Debug.LogError("ShapeGenerator.cs is not attached to the main camera!");
-		
-		gd = GetComponent<GameData>();		
-		if(gd!=null)
-			Debug.LogError("GameData.cs is not attached to the main camera!");
+		camera = Camera.mainCamera;	
 	}
 	
 	// Update is called once per frame
@@ -36,8 +28,20 @@ public class ShapeGenerator : MonoBehaviour {
 	private bool flagedForCreation(string shapeType) {
 		bool returnValue = false;
 		switch (shapeType) {
+			case "cone":
+			break;
 			case "cube":
 			break;
+			case "cylinder":
+			break;
+			case "diamond":
+			break;
+			case "pyramid":
+			break;
+			case "sphere":
+			break;
+			case "torus":
+			break;		
 		}
 		return returnValue;
 	}

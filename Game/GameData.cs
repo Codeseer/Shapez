@@ -7,17 +7,8 @@ using System.Collections;
  * level
  * etc...
  */
-public class GameData : MonoBehaviour {
+public static class GameData{
 	
-	public int level = 0;
-	public float srm = 1;
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+	public static int level = 0;
+	public static float srm = 1;
 }

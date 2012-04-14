@@ -9,9 +9,7 @@ using System.Collections;
 */
 public class Cube : MonoBehaviour {
 	
-	public AnimationCurve acceleration;
-	
-	public float velocity = 10f;
+	public float initSpeed = 10f;
 	
 	float _speed;
 	//this allows the speed to be set after the cube is initialized
@@ -40,7 +38,7 @@ public class Cube : MonoBehaviour {
 	private Vector3 endPosition;
 	// Use this for initialization
 	void Start () {
-		speed = velocity;
+		speed = initSpeed;
 		endPosition = Camera.main.transform.position;
 	}
 	
