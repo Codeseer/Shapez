@@ -13,4 +13,5 @@ public static class GameData{
 	public static float srm = 1;
 	public static int maxHealth = 1000;
 	public static int health = 1000;
+	public static int score = 0; 
 }
