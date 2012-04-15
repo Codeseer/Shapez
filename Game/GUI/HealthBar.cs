@@ -8,7 +8,6 @@ public class HealthBar : MonoBehaviour {
 	
 	public GUIStyle foreground;
 	public GUIStyle background;
-	
 	public HealthLoss healthLossPrefab;
 	
 	private float screenToHealthRatio;
@@ -20,6 +19,7 @@ public class HealthBar : MonoBehaviour {
 	}
 	
 	void OnGUI() {
+		GameData.health--;
 		if(GameData.health<lastKnownHelath)
 		{
 			healthLossPrefab.rect = new Rect(GameData.health * screenToHealthRatio,Screen.height-16,(lastKnownHelath-GameData.health) * screenToHealthRatio,16);
