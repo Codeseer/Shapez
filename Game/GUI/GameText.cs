@@ -7,11 +7,18 @@ using System.Collections;
  * And move. And Scale
  */
 public class GameText : MonoBehaviour {
-
-	public Rect rect;
-	public string text;
+	
+	public string text = "Game Text";
+	public Vector2 location;
 	public GUIStyle style;
 	
+	
+		private Rect _rect;
+	public Rect rect{
+		get{ return _rect;}
+	}
+	
+	public bool fade = false;
 	public Vector2 fadeVelocity;
 	public float fadeDuration;
 	
@@ -21,44 +28,53 @@ public class GameText : MonoBehaviour {
 	public AnimationCurve scaleXChange;
 	public AnimationCurve scaleYChange;
 	
+	
 	private Color c;
 	private float timeSinceStart;
 	private Matrix4x4 scaleMatrix;
+	
 	// Use this for initialization
 	void Start () {
+		
 		c = GUI.color;
 		scaleMatrix = GUI.matrix;
+		Vector2 rectSize = style.CalcSize(new GUIContent(text));
+		_rect = new Rect(location.x,location.y,rectSize.x,rectSize.y);		
+		//fixes an ofset that occurs with text
+		_rect.width*=1.2f;
 		
 		timeSinceStart = 0f;
 		fadeVelocity *= 10;
-		
-		StartCoroutine(fadeOut());
-		Vector2 rectSize = style.CalcSize(new GUIContent(text));
-		rect.width = rectSize.x;
-		rect.height = rectSize.y;
+		if(fade)
+		{
+			StartCoroutine(fadeOut());
+		}
 	}
 	
 	void OnGUI() {
+		_rect.x = location.x;
+		_rect.y = location.y;
+		
 		GUI.color = c;
 		GUI.matrix = scaleMatrix;
-		GUI.Label(rect,text,style);
+		GUI.Label(_rect,text,style);
 	}
 	
 	IEnumerator fadeOut(){
 		while(timeSinceStart<fadeDuration) {
 			c.a = fadeAlphaAcceleration.Evaluate(timeSinceStart/fadeDuration);			
 			
-			rect.x += fadeVelocity.x * fadeXAcceleration.Evaluate(timeSinceStart/fadeDuration) * Time.deltaTime;
-			rect.y += fadeVelocity.y * fadeYAcceleration.Evaluate(timeSinceStart/fadeDuration) * Time.deltaTime;
+			_rect.x += fadeVelocity.x * fadeXAcceleration.Evaluate(timeSinceStart/fadeDuration) * Time.deltaTime;
+			_rect.y += fadeVelocity.y * fadeYAcceleration.Evaluate(timeSinceStart/fadeDuration) * Time.deltaTime;
 			
 			float scaleX = scaleXChange.Evaluate(timeSinceStart/fadeDuration)/2;
 			float scaleY = scaleYChange.Evaluate(timeSinceStart/fadeDuration)/2;
 			
-			float sCX = ((1-scaleX)*rect.width)/2;
-			float sCY = ((1-scaleY)*rect.height)/2;
+			float sCX = ((1-scaleX)*_rect.width)/2;
+			float sCY = ((1-scaleY)*_rect.height)/2;
 			
-			float sOX = (1-scaleX)*rect.x;
-			float sOY = (1-scaleY)*rect.y;
+			float sOX = (1-scaleX)*_rect.x;
+			float sOY = (1-scaleY)*_rect.y;
 			
 			Vector3 tOffset = new Vector3(sOX+sCX,sOY+sCY,0f);
 			

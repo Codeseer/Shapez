@@ -12,10 +12,13 @@ public class HealthBar : MonoBehaviour {
 	
 	private float screenToHealthRatio;
 	private float lastKnownHelath;
+	private Rect rect;
 	// Use this for initialization
 	void Start () {
 		lastKnownHelath = GameData.health;
 		screenToHealthRatio = (float)Screen.width/(float)GameData.maxHealth;
+		rect = new Rect(0,Screen.height,GameData.health * screenToHealthRatio,16);
+		StartCoroutine(flyIn());
 	}
 	
 	void OnGUI() {
@@ -27,10 +30,19 @@ public class HealthBar : MonoBehaviour {
 			lastKnownHelath = GameData.health;
 		}
 		//GUI.Box(new Rect(0,Screen.height-16,Screen.width,16),"",background);
-		GUI.Box(new Rect(0,Screen.height-16,GameData.health * screenToHealthRatio,16),"",foreground);
+		rect.width = GameData.health * screenToHealthRatio;
+		GUI.Box(rect,"",foreground);
 	}
 	// Update is called once per frame
 	void Update () {
-		
+	}
+	
+	IEnumerator flyIn()
+	{
+		while(rect.y>=Screen.height-16)
+		{
+			rect.y -=1;
+			yield return true;
+		}
 	}
 }
