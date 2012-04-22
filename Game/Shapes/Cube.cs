@@ -9,7 +9,16 @@ using System.Collections;
 */
 public class Cube : MonoBehaviour {
 	
-	public float initSpeed = 10f;
+	public float initialSpeed = 10f;
+	public float heightFactor = 10f;
+	public float rotationX,rotationY,rotationZ;
+	
+	private Vector3 startPosition;
+	
+	private float timeSinceStart; 	// variables needed to calculate 
+	private float timeToTarget;		// the new position of the pyramid in update.
+	
+	private Transform t;	// cache built-in transform variable for performance
 	
 	float _speed;
 	//this allows the speed to be set after the cube is initialized
@@ -19,51 +28,48 @@ public class Cube : MonoBehaviour {
 		set{
 			_speed = value;
 			//update the timeToTarget based on new speed and current position
-			float dist = Vector3.Distance(transform.position,Camera.main.transform.position);
+			float dist = Vector3.Distance(t.position, GameData.convergencePoint);
 			timeToTarget = dist/_speed;
 			//reset the timeSinceStart and startPosition so LERP works correctly in the update method
 			timeSinceStart = 0f;
-			startPosition = transform.position;
+			startPosition = t.position;
 		}
 	}
-	public float rotationX,rotationY,rotationZ;
 	
-	private Vector3 startPosition;
-	
-	//variables needed to calculate the new position of the cube in update.
-	private float timeSinceStart;
-	private float timeToTarget;
-	
-	//the position of the main camera... easier to just assign it to a variable
-	private Vector3 endPosition;
 	// Use this for initialization
 	void Start () {
-		speed = initSpeed;
-		endPosition = Camera.main.transform.position;
+		t = transform;
+		speed = initialSpeed;
 	}
 	
 	
 	// Update is called once per frame
 	void Update () {
 		timeSinceStart += Time.deltaTime;
-		timeSinceStart += Time.deltaTime;
-		transform.position = getNewPosition();
+		t.position = getNewPosition();
 		spin();
-	}
-	//make the cube spin
-	private void spin(){
-		transform.Rotate(Vector3.right * rotationX * Time.deltaTime);
-		transform.Rotate(Vector3.down * rotationY * Time.deltaTime);
-		transform.Rotate(Vector3.forward * rotationZ * Time.deltaTime);
+		
+		if ((t.position - GameData.convergencePoint).magnitude < 2)
+		{
+			Destroy(gameObject);
+		}
 	}
 	
-	//new position of the cube
-	private Vector3 getNewPosition(){
-		float lerp = timeSinceStart/timeToTarget;
-		float deltaX = Mathf.Lerp(startPosition.x,endPosition.x,lerp);
-		float deltaY = Mathf.Lerp(startPosition.y,endPosition.y,lerp);
-		float deltaZ = Mathf.Lerp(startPosition.z,endPosition.z,lerp);
+	//make the cube spin
+	private void spin(){
+		t.Rotate(Vector3.right * rotationX * Time.deltaTime);
+		t.Rotate(Vector3.down * rotationY * Time.deltaTime);
+		t.Rotate(Vector3.forward * rotationZ * Time.deltaTime);
 		
-		return new Vector3(deltaX,deltaY,deltaZ);
+	}
+	
+	// new position of the pyramid
+	private Vector3 getNewPosition(){
+		float lerp = timeSinceStart / timeToTarget;
+		float deltaX = Mathf.Lerp(startPosition.x, GameData.convergencePoint.x, lerp);
+		float deltaY = Mathf.Lerp(startPosition.y, GameData.convergencePoint.y, lerp);
+		float deltaZ = Mathf.Lerp(startPosition.z, GameData.convergencePoint.z, lerp);
+		
+		return new Vector3(deltaX, deltaY, deltaZ);
 	}
 }
