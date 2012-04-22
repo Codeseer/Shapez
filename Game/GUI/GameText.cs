@@ -14,8 +14,9 @@ public class GameText : MonoBehaviour {
 	
 	
 		private Rect _rect;
-	public Rect rect{
-		get{ return _rect;}
+	public Rect rect
+	{
+		get{return _rect;}
 	}
 	
 	public bool fade = false;
@@ -34,12 +35,14 @@ public class GameText : MonoBehaviour {
 	private Matrix4x4 scaleMatrix;
 	
 	// Use this for initialization
-	void Start () {
+	void Start()
+	{
 		
 		c = GUI.color;
 		scaleMatrix = GUI.matrix;
 		Vector2 rectSize = style.CalcSize(new GUIContent(text));
 		_rect = new Rect(location.x,location.y,rectSize.x,rectSize.y);		
+		
 		//fixes an ofset that occurs with text
 		_rect.width*=1.2f;
 		
@@ -51,7 +54,8 @@ public class GameText : MonoBehaviour {
 		}
 	}
 	
-	void OnGUI() {
+	void OnGUI()
+	{
 		_rect.x = location.x;
 		_rect.y = location.y;
 		
@@ -60,8 +64,10 @@ public class GameText : MonoBehaviour {
 		GUI.Label(_rect,text,style);
 	}
 	
-	IEnumerator fadeOut(){
-		while(timeSinceStart<fadeDuration) {
+	IEnumerator fadeOut()
+	{
+		while(timeSinceStart<fadeDuration)
+		{
 			c.a = fadeAlphaAcceleration.Evaluate(timeSinceStart/fadeDuration);			
 			
 			_rect.x += fadeVelocity.x * fadeXAcceleration.Evaluate(timeSinceStart/fadeDuration) * Time.deltaTime;
@@ -84,7 +90,8 @@ public class GameText : MonoBehaviour {
 		Destroy(this);
 	}
 	// Update is called once per frame
-	void Update () {
+	void Update()
+	{
 		timeSinceStart += Time.deltaTime;
 	}
 }

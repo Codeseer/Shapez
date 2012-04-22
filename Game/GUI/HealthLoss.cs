@@ -8,21 +8,27 @@ public class HealthLoss : MonoBehaviour {
 	public float fadeOutTime = 1f;
 	
 	private Color color;
-	// Use this for initialization
 	private float timeSinceStart;
-	void Start () {
+	
+	// Use this for initialization
+	void Start()
+	{
 		timeSinceStart = 0f;
-		color = Color.white;		
+		color = Color.white;	
+		
 		StartCoroutine(fadeOut());		
 	}
 	
-	void OnGUI() {
+	void OnGUI()
+	{	
 		GUI.color = color;
 		GUI.Label(rect,"",style);
 	}
 	
-	IEnumerator fadeOut() {
-		while(timeSinceStart<fadeOutTime) {
+	IEnumerator fadeOut()
+	{
+		while(timeSinceStart<fadeOutTime)
+		{
 			color.a = Mathf.Lerp(1,0,timeSinceStart/fadeOutTime);
 			yield return null;
 		}
@@ -30,7 +36,8 @@ public class HealthLoss : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update()
+	{
 		timeSinceStart += Time.deltaTime;
 	}
 }

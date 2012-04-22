@@ -7,20 +7,23 @@ using System.Collections;
 public class MenuGUI : MonoBehaviour {
 	
 	public GUISkin skin;
+	public int speed = 10;
 	
 	private Vector3 scale;
 	private Vector2 location;
+	private Vector2 buttonSize;
 	private bool done;
-	public int speed = 10;
-	// Base all positioning on a 2000-2000 screen it will scale depending on their actual screen.
-	void Start () {
+	
+	void Start() 
+	{
 		location = new Vector2(Screen.width/2,Screen.height/2);
 		done = false;
 		skin.button.fontSize = Screen.width/10;
 	}
 	
-	private Vector2 buttonSize;
-	void OnGUI () {
+	
+	void OnGUI()
+	{
 		GUI.skin = skin;
 		
 		GUIContent buttonContent = new GUIContent("Play");
@@ -31,10 +34,6 @@ public class MenuGUI : MonoBehaviour {
 		{
 			StartCoroutine(playButton());
 		}
-	}
-	// Update is called once per frame
-	void Update () {
-	
 	}
 	
 	IEnumerator playButton()

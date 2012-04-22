@@ -7,7 +7,7 @@ public class ScoreText : MonoBehaviour {
 	
 	private Rect rect;
 	
-	void Start ()
+	void Start()
 	{
 		style.fontSize = Screen.height/15;
 		Vector2 contentSize = style.CalcSize(new GUIContent(GameData.score.ToString()));
