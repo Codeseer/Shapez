@@ -10,21 +10,18 @@ public class MenuGUI : MonoBehaviour {
 	
 	private Vector3 scale;
 	private Vector2 location;
-	private int direction;
 	private bool done;
-	public int speed = 50;
+	public int speed = 10;
 	// Base all positioning on a 2000-2000 screen it will scale depending on their actual screen.
 	void Start () {
-		location = new Vector2(1000,1000);
-		scale = new Vector3((float)Screen.width / 2000.0f,(float)Screen.height / 2000.0f, 1.0f);
-		direction = Random.Range(0,4);
+		location = new Vector2(Screen.width/2,Screen.height/2);
 		done = false;
+		skin.button.fontSize = Screen.width/10;
 	}
 	
 	private Vector2 buttonSize;
 	void OnGUI () {
 		GUI.skin = skin;
-		GUI.matrix = Matrix4x4.Scale(scale);
 		
 		GUIContent buttonContent = new GUIContent("Play");
 		buttonSize = GUI.skin.button.CalcSize(buttonContent);
@@ -44,39 +41,10 @@ public class MenuGUI : MonoBehaviour {
 	{
 		while(!done)
 		{
-			switch(direction){
-				case 0:
-					//up
-					location.y-=speed;
-					if(location.y<-1*buttonSize.y)
-					{
-						done = true;
-					}
-				break;
-				case 1:
-					//down
-					location.y+=speed;
-					if(location.y>2000)
-					{
-						done = true;
-					}
-				break;
-				case 2:
-					//right
-					location.x+=speed;
-					if(location.x>2000)
-					{
-						done = true;
-					}
-				break;
-				case 3:
-					//left
-					location.x-=speed;
-					if(location.x<-1*buttonSize.x)
-					{
-						done = true;
-					}
-				break;
+			location.y-=speed;
+			if(location.y<-1*buttonSize.y)
+			{
+				done = true;
 			}
 			yield return null;
 		}

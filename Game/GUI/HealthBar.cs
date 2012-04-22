@@ -9,6 +9,7 @@ public class HealthBar : MonoBehaviour {
 	public GUIStyle foreground;
 	public GUIStyle background;
 	public HealthLoss healthLossPrefab;
+	public int height = (int)(Screen.height/20);
 	
 	private float screenToHealthRatio;
 	private float lastKnownHelath;
@@ -17,15 +18,14 @@ public class HealthBar : MonoBehaviour {
 	void Start () {
 		lastKnownHelath = GameData.health;
 		screenToHealthRatio = (float)Screen.width/(float)GameData.maxHealth;
-		rect = new Rect(0,Screen.height,GameData.health * screenToHealthRatio,16);
+		rect = new Rect(0,Screen.height,GameData.health * screenToHealthRatio,height);
 		StartCoroutine(flyIn());
 	}
 	
 	void OnGUI() {
-		GameData.health--;
 		if(GameData.health<lastKnownHelath)
 		{
-			healthLossPrefab.rect = new Rect(GameData.health * screenToHealthRatio,Screen.height-16,(lastKnownHelath-GameData.health) * screenToHealthRatio,16);
+			healthLossPrefab.rect = new Rect(GameData.health * screenToHealthRatio,Screen.height-height,(lastKnownHelath-GameData.health) * screenToHealthRatio,16);
 			Instantiate(healthLossPrefab);
 			lastKnownHelath = GameData.health;
 		}
@@ -39,7 +39,7 @@ public class HealthBar : MonoBehaviour {
 	
 	IEnumerator flyIn()
 	{
-		while(rect.y>=Screen.height-16)
+		while(rect.y>=Screen.height-height)
 		{
 			rect.y -=1;
 			yield return true;
